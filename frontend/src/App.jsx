@@ -4,6 +4,12 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ForgetPassword from "./components/ForgetPassword";
 import Dashboard from "./pages/Dashboard";
+import Setting from "./pages/Setting";
+
+
+
+
+
 
 function App() {
   return (
@@ -15,6 +21,8 @@ function App() {
         <Route path="/forgot-password" element={<ForgetPassword />} />
         <Route path="/reset-password/:token" element={<ForgetPassword />} /> 
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/setting" element={<Setting />} />
+
 
 
        </Routes>
