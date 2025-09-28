@@ -1,22 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
 
-const Dashboard = () => {
+const Dashboard = ({ user }) => {
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
-
-  // Restore user from localStorage on refresh
-  useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-  }, []);
 
   const handleLogout = () => {
-    localStorage.removeItem("user"); // ✅ clear user
     navigate("/login");
   };
 
@@ -36,7 +26,7 @@ const Dashboard = () => {
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
         >
-          Welcome To Notezy, {user?.fullName || user?.email || "User"}
+          Welcome To Notezy, {user?.name || user?.email || "User"}
         </motion.h2>
 
         <p className="text-gray-400 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed">
