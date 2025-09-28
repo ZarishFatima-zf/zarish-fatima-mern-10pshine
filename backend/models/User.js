@@ -7,6 +7,8 @@ const userSchema = new mongoose.Schema(
     password: { type: String, required: true },
     resetPasswordToken: String,
     resetPasswordExpire: Date,
+    image: { type: String, default: null }, // store file path or URL
+
   },
   { timestamps: true }
 );

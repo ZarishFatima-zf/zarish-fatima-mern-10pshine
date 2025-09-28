@@ -5,6 +5,8 @@ import Login from "./pages/Login";
 import ForgetPassword from "./components/ForgetPassword";
 import Dashboard from "./pages/Dashboard";
 import Setting from "./pages/Setting";
+import Profile from "./pages/Profile";
+
 
 
 
@@ -22,6 +24,7 @@ function App() {
         <Route path="/reset-password/:token" element={<ForgetPassword />} /> 
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/setting" element={<Setting />} />
+        <Route path="/profile" element={<Profile />} />
 
 
 
