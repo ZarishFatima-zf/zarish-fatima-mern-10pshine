@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-d
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import ResetPasswordPage from "./components/ForgetPassword";
+import Dashboard from "./pages/Dashboard"
 
 function App() {
   return (
@@ -13,6 +14,8 @@ function App() {
         <Route path="/signup" element={<Signup />} />
        <Route path="/forgot-password" element={<ResetPasswordPage />} />
         <Route path="/reset-password/:token" element={<ResetPasswordPage />} />
+       <Route path="/dashboard" element={<Dashboard/>} />
+
       </Routes>
     </Router>
   );
