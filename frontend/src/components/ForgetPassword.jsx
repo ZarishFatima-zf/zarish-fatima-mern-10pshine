@@ -1,7 +1,7 @@
 import React from "react";
 import { useFormik } from "formik";
 import { useParams, useNavigate } from "react-router-dom";
-
+import Button from "../components/Button"; 
 const ForgetPassword = () => {
   const { token } = useParams(); 
   const navigate = useNavigate();
@@ -70,19 +70,20 @@ const ForgetPassword = () => {
           />
         )}
 
-        <button
-          type="submit"
-          disabled={formik.isSubmitting}
-          className="bg-[#868532] hover:bg-[#6f6c29] p-2 rounded w-full"
-        >
-          {formik.isSubmitting
-            ? token
-              ? "Resetting..."
-              : "Sending..."
-            : token
-            ? "Reset Password"
-            : "Send Reset Link"}
-        </button>
+      <Button
+    type="submit"
+    disabled={formik.isSubmitting}
+    variant="primary"
+    className="w-full py-2 text-lg"
+  >
+    {formik.isSubmitting
+      ? token
+        ? "Resetting..."
+        : "Sending..."
+      : token
+      ? "Reset Password"
+      : "Send Reset Link"}
+  </Button>
 
         {formik.status && (
           <p className="text-sm text-green-400 text-center">{formik.status}</p>
