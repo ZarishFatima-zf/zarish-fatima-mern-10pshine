@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Camera, X } from "lucide-react";
 import Sidebar from "../components/Sidebar";
+import Button from "../components/Button"; 
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
@@ -12,10 +13,9 @@ const Profile = () => {
   const [email, setEmail] = useState("");
   const [backup, setBackup] = useState({ name: "", email: "", image: "" });
   const [userId, setUserId] = useState(null);
-  const [image, setImage] = useState(null); // current image url
-  const [preview, setPreview] = useState(null); // file to upload or "remove"
+  const [image, setImage] = useState(null); 
+  const [preview, setPreview] = useState(null);
 
-  // Load user from localStorage
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
     if (!storedUser) return navigate("/login");
@@ -29,7 +29,6 @@ const Profile = () => {
     setImage(parsed.image || null);
   }, [navigate]);
 
-  // Fetch latest profile from backend
   useEffect(() => {
     if (!userId) return;
 
@@ -90,7 +89,6 @@ const Profile = () => {
     navigate("/login");
   };
 
-  // Image input change
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -101,8 +99,8 @@ const Profile = () => {
       return;
     }
 
-    setPreview(file); // file for upload
-    setImage(URL.createObjectURL(file)); // preview
+    setPreview(file);
+    setImage(URL.createObjectURL(file));
   };
 
   const handleRemoveImage = () => {
@@ -112,19 +110,22 @@ const Profile = () => {
 
   return (
     <motion.div
-      className="min-h-screen flex flex-col sm:flex-row bg-[#0A162D] text-white"
+      className="min-h-screen flex flex-col sm:flex-row bg-[#0A162D] text-white overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <Sidebar onLogout={handleLogout} />
 
-      <div className="flex-1 flex flex-col items-center justify-center p-6">
-        <main className="w-full max-w-md sm:max-w-lg lg:max-w-2xl xl:max-w-3xl p-4 sm:p-6 lg:p-12">
-          <div className="text-center mb-6 md:mb-10 lg:mb-12">
+      {/* Main content */}
+      <div className="flex-1 flex flex-col items-center justify-start p-4 sm:p-6 lg:p-8">
+        <main className="w-full max-w-md sm:max-w-lg lg:max-w-2xl xl:max-w-3xl p-4 sm:p-6 lg:p-8">
+          
+          {/* Heading */}
+          <div className="text-center mb-6 sm:mb-8 lg:mb-10 -mt-4">
             <motion.h2
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 md:mb-3"
-              initial={{ y: -20, opacity: 0 }}
+              className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-1"
+              initial={{ y: -10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6 }}
             >
@@ -135,9 +136,10 @@ const Profile = () => {
             </p>
           </div>
 
+          {/* Profile Card */}
           <motion.div
-            className="bg-[#071124] p-6 sm:p-8 lg:p-10 rounded-2xl shadow-lg"
-            initial={{ y: 20, opacity: 0 }}
+            className="bg-[#071124] p-6 sm:p-8 lg:p-8 rounded-xl shadow-lg"
+            initial={{ y: 10, opacity: 0 }}
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
@@ -184,7 +186,8 @@ const Profile = () => {
               </div>
             </div>
 
-            <div className="text-center mt-4">
+            {/* Name & Email */}
+            <div className="text-center mt-2 mb-2">
               <h3 className="text-lg sm:text-xl font-semibold">{fullName || "Your Name"}</h3>
               <p className="text-gray-400 text-sm sm:text-base">{email || "your@email.com"}</p>
             </div>
@@ -215,27 +218,18 @@ const Profile = () => {
 
             {/* Buttons */}
             {!isEditing ? (
-              <button
-                onClick={handleEdit}
-                className="w-full bg-[#868532] text-white font-semibold py-2 lg:py-3 rounded-md hover:bg-[#6f6c29] transition"
-              >
-                Edit Profile
-              </button>
-            ) : (
-              <div className="flex gap-3">
-                <button
-                  onClick={handleSave}
-                  className="flex-1 bg-[#868532] text-white font-semibold py-2 lg:py-3 rounded-md hover:bg-[#6f6c29] transition"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={handleCancel}
-                  className="flex-1 border border-gray-400 text-white font-semibold py-2 lg:py-3 rounded-md hover:bg-gray-600 transition"
-                >
-                  Cancel
-                </button>
-              </div>
+  <Button onClick={handleEdit} variant="primary" className="w-full lg:py-3">
+    Edit Profile
+  </Button>
+) : (
+  <div className="flex gap-3">
+    <Button onClick={handleSave} variant="primary" className="lg:py-3">
+      Save
+    </Button>
+    <Button onClick={handleCancel} variant="secondary" className="lg:py-3">
+      Cancel
+    </Button>
+  </div>
             )}
           </motion.div>
         </main>

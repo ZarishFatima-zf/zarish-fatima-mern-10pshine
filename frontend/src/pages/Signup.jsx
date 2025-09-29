@@ -135,7 +135,7 @@ const Signup = () => {
                 type="submit"
                 disabled={formik.isSubmitting}
                 variant="primary"
-                className="bg-[#868532] hover:bg-[#6f6c29] text-white text-lg"
+                className="w-full py-3 " 
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
               >

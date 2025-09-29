@@ -6,7 +6,7 @@ import { StickyNote, LayoutDashboard, User, Settings, LogOut } from "lucide-reac
 const Sidebar = ({ onLogout }) => {
   const menuItems = [
     { name: "Dashboard", icon: <LayoutDashboard className="w-6 h-6 sm:w-7 sm:h-7" />, path: "/dashboard" },
-    { name: "My Notes", icon: <StickyNote className="w-6 h-6 sm:w-7 sm:h-7" />, path: "/notes" },
+    { name: "All Notes", icon: <StickyNote className="w-6 h-6 sm:w-7 sm:h-7" />, path: "/notes" },
     { name: "Profile", icon: <User className="w-6 h-6 sm:w-7 sm:h-7" />, path: "/profile" },
     { name: "Setting", icon: <Settings className="w-6 h-6 sm:w-7 sm:h-7" />, path: "/setting" },
   ];

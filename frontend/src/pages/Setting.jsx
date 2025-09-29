@@ -5,6 +5,8 @@ import { useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormField from "../components/FormField"; 
+import Button from "../components/Button";
+
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -69,7 +71,6 @@ const Settings = () => {
       localStorage.removeItem("user");
       navigate("/signup");
     } catch (error) {
-      alert("Error deleting account. Try again later.");
     }
   };
 
@@ -82,7 +83,7 @@ const Settings = () => {
 
   return (
     <motion.div
-      className="min-h-screen flex flex-col sm:flex-row bg-[#0A162D] text-white"
+      className="min-h-screen flex flex-col sm:flex-row bg-[#0A162D] text-white overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -91,13 +92,13 @@ const Settings = () => {
       <Sidebar onLogout={handleLogout} />
 
       {/* Main Content */}
-      <div className="flex-1 flex flex-col items-center justify-center p-6">
-        <main className="w-full max-w-md sm:max-w-lg lg:max-w-2xl xl:max-w-3xl p-4 sm:p-6 lg:p-12">
+      <div className="flex-1 flex flex-col items-center justify-start p-4 sm:p-6 lg:p-8">
+        <main className="w-full max-w-md sm:max-w-lg lg:max-w-2xl xl:max-w-3xl p-4 sm:p-6 lg:p-8">
           {/* Heading */}
-          <div className="text-center mb-6 md:mb-10 lg:mb-12">
+          <div className="text-center mb-6 sm:mb-8 lg:mb-10 -mt-4">
             <motion.h2
-              className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 md:mb-3"
-              initial={{ y: -20, opacity: 0 }}
+           className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-1"
+              initial={{ y: -10, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.6 }}
             >
@@ -159,21 +160,14 @@ const Settings = () => {
                   </div>
 
                   {/* Buttons */}
-                  <div className="flex gap-4">
-                    <button
-                      type="submit" // ✅ Corrected Formik submission
-                      className="flex-1 bg-[#868532] text-white font-semibold py-2 rounded-md hover:bg-[#6f6c29] transition"
-                    >
-                      Change Password
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setShowModal(true)}
-                      className="flex-1 border border-red-500 text-red-500 font-semibold py-2 rounded-md hover:bg-red-600 hover:text-white transition"
-                    >
-                      Delete Account
-                    </button>
-                  </div>
+                 <div className="flex gap-4">
+  <Button type="submit" variant="primary">
+    Change Password
+  </Button>
+  <Button type="button" variant="danger" onClick={() => setShowModal(true)}>
+    Delete Account
+  </Button>
+</div>                  
                 </Form>
               )}
             </Formik>
