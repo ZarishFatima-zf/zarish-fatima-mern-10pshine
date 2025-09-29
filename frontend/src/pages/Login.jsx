@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useFormik } from 'formik';
@@ -21,29 +22,32 @@ const Login = () => {
     initialValues: { email: '', password: '' },
     validate,
 
-  onSubmit: async (values, { setSubmitting, setErrors }) => {
-    try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(values),
-      });
+    onSubmit: async (values, { setSubmitting, setErrors }) => {
+      try {
+        const res = await fetch("http://localhost:5000/api/auth/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(values),
+        });
 
-      const data = await res.json();
+        const data = await res.json();
 
-      if (!res.ok) {
-        setErrors({ email: data.message });
-      } else {
-        localStorage.setItem("user", JSON.stringify(data.user));
-       navigate("/dashboard");
+        if (!res.ok) {
+          setErrors({ email: data.message });
+        } else {
+          // ✅ Save user info
+          localStorage.setItem("user", JSON.stringify(data.user));
+          localStorage.setItem("userId", data.user.id); // 🔥 Save userId for Profile.jsx
+
+          navigate("/dashboard");
+        }
+      } catch (err) {
+        console.error(err);
+      } finally {
+        setSubmitting(false);
       }
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setSubmitting(false);
-    }
-  },
-});
+    },
+  });
 
 
 
@@ -123,7 +127,7 @@ const Login = () => {
                 type="submit"
                 disabled={formik.isSubmitting}
                 variant="primary"
-                className="bg-[#868532] hover:bg-[#6f6c29] text-white text-lg"
+                className="w-full py-3 " // ✅ full width to match FormField
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
               >

@@ -1,59 +1,34 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+// components/Button.jsx
+import React from "react";
+import { motion } from "framer-motion";
 
-const Button = ({ 
-  children, 
-  onClick, 
-  type = 'button',
-  variant = 'primary',
-  className = '',
+const Button = ({
+  children,
+  onClick,
+  type = "button",
+  variant = "primary", // 'primary', 'secondary', 'danger'
+  className = "",
   disabled = false,
-  ...props 
+  ...props
 }) => {
-  const baseClasses = 'w-full py-4 px-6 rounded-lg font-medium text-xl transition-all duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-slate-900';
-  
+  // Variant styles
   const variants = {
-    primary: 'bg-[#868532] hover:bg-[#6f6c29] text-white focus:ring-[#868532] shadow-lg shadow-[#868532]/30',
-    secondary: 'bg-slate-700 hover:bg-slate-600 text-white focus:ring-slate-500',
-    danger: 'border-2 border-[#868532] text-[#868532] hover:bg-[#868532] hover:text-white focus:ring-[#868532]',
-  };
-
-
-  const buttonClasses = `${baseClasses} ${variants[variant]} ${className} ${
-    disabled ? 'opacity-50 cursor-not-allowed' : ''
-  }`;
-
-  const buttonVariants = {
-    hover: { 
-      scale: 1.02,
-      transition: { duration: 0.2, ease: "easeInOut" }
-    },
-    tap: { 
-      scale: 0.98,
-      transition: { duration: 0.1 }
-    },
-    initial: { scale: 1 }
+    primary: "bg-[#868532] text-white hover:bg-[#6f6c29]",
+    secondary: "bg-gray-500 text-white hover:bg-gray-600",
+    danger: "border border-red-500 text-red-500 hover:bg-red-600 hover:text-white",
   };
 
   return (
     <motion.button
-      className={buttonClasses}
-      onClick={onClick}
       type={type}
+      onClick={onClick}
       disabled={disabled}
-      variants={buttonVariants}
-      initial="initial"
-      whileHover={!disabled ? "hover" : "initial"}
-      whileTap={!disabled ? "tap" : "initial"}
+      className={` text-lg flex-1 py-2 rounded-md font-semibold transition ${variants[variant]} ${className}`}
+      whileHover={{ scale: 1.03 }}
+      whileTap={{ scale: 0.97 }}
       {...props}
     >
-      <motion.span
-        initial={{ opacity: 0, y: 5 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1, duration: 0.3 }}
-      >
-        {children}
-      </motion.span>
+      {children}
     </motion.button>
   );
 };
