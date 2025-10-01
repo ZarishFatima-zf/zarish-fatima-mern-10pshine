@@ -88,7 +88,7 @@ const Signup = () => {
         >
           <motion.div variants={itemVariants} className="text-left mb-8">
             <motion.h1
-              className="text-2xl sm:text-2xl lg:text-4xl font-bold text-white mb-3"
+              className="text-2xl sm:text-4xl lg:text-5xl font-bold text-white mb-3"
               initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.7 }}

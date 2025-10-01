@@ -2,55 +2,152 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
+import NoteCard from "../components/NoteCard";
+import { StickyNote } from "lucide-react";
+import Button from "../components/Button";
+import axios from "axios";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+  const [notes, setNotes] = useState([]);
 
-  // Restore user from localStorage on refresh
-  useEffect(() => {
-    const savedUser = localStorage.getItem("user");
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
-    }
-  }, []);
+useEffect(() => {
+  const savedUser = localStorage.getItem("user");
+  if (savedUser) {
+    const u = JSON.parse(savedUser);
+    setUser(u);
 
+    axios
+      .get(`http://localhost:5000/api/notes/users/${u.id}/notes`)
+      .then((res) => {
+        // Sort notes by createdAt (descending => latest first)
+        const sortedNotes = (res.data.notes || []).sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+        setNotes(sortedNotes);
+      })
+      .catch((err) => console.error("Fetch Notes Error:", err));
+  }
+}, []);
   const handleLogout = () => {
-    localStorage.removeItem("user"); // ✅ clear user
+    localStorage.removeItem("user");
     navigate("/login");
   };
 
+  const handleDeleteNote = async (noteId) => {
+    try {
+      await axios.delete(
+        `http://localhost:5000/api/notes/users/${user.id}/notes/${noteId}`
+      );
+      setNotes(notes.filter((note) => note._id !== noteId));
+    } catch (err) {
+      console.error("Delete Note Error:", err);
+    }
+  };
+
+  const handleEditNote = (noteId) => navigate(`/editor/${noteId}`);
+
+  // Show first 6 notes to fit screen
+// Show notes according to screen size
+const [notesToDisplay, setNotesToDisplay] = useState([]);
+
+useEffect(() => {
+  const updateNotesToDisplay = () => {
+    const width = window.innerWidth;
+    let limit = 6;
+
+    if (width < 640) {
+      limit = 3; // 📱 Mobile
+    } else if (width >= 640 && width < 1024) {
+      limit = 6; // 📲 Tablet
+    } else {
+      limit = 6; // 💻 Desktop
+    }
+
+    setNotesToDisplay(notes.slice(0, limit));
+  };
+
+  updateNotesToDisplay(); // Initial run
+  window.addEventListener("resize", updateNotesToDisplay);
+
+  return () => window.removeEventListener("resize", updateNotesToDisplay);
+}, [notes]);
+
   return (
     <motion.div
-      className="min-h-screen flex flex-col sm:flex-row bg-[#0A162D] text-white"
+      className="min-h-screen flex flex-col sm:flex-row bg-[#0A162D] text-white overflow-hidden"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
       <Sidebar onLogout={handleLogout} />
 
-      <main className="flex-1 mt-14 sm:mt-0 p-4 sm:p-6 md:p-8 lg:p-10">
-        <motion.h2
-          // className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4"
-                        className="text-xl sm:text-xl lg:text-4xl font-bold text-white mb-3"
+      <main className="flex-1 mt-14 sm:mt-4 p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col justify-start">
+          <motion.h2
+            className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-4 flex items-center gap-2"
+            initial={{ y: -20, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+            Welcome To Notezy
+            <StickyNote className="text-[#6f6c29]" size={32} /> {user?.fullName || user?.email || "User"}
+          </motion.h2>
 
-          initial={{ y: -20, opacity: 0 }}
-          animate={{ y: 0, opacity: 1 }}
-          transition={{ duration: 0.6 }}
-        >
-          Welcome To Notezy, {user?.fullName || user?.email || "User"}
-        </motion.h2>
-
-        <p className="text-gray-400 text-sm sm:text-base lg:text-lg leading-relaxed">
-          Your notes, your space, your way because every idea deserves a home.
+        <p className="text-gray-400 mb-2">
+          Your notes, your space, your way.
         </p>
+
+        {/* Total Notes */}
+        <div className="flex justify-end -mt-2 mb-6">
+          <div className="bg-[#6f6c29] text-white py-2 px-4 rounded-lg w-fit shadow-md">
+            Total Notes: <span className="font-semibold">{notes.length}</span>
+          </div>
+        </div>
+
+        {/* Notes Grid */}
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-6">
+          {notesToDisplay.length > 0 ? (
+            notesToDisplay.map((note) => (
+              <NoteCard
+                key={note._id}
+                note={note}
+                onDelete={handleDeleteNote}
+                onEdit={handleEditNote}
+              />
+            ))
+          ) : (
+            <p className="text-gray-400 col-span-full">
+              No notes found. Add your first one!
+            </p>
+          )}
+        </div>
+
+        {/* "More Notes" Button */}
+        {notes.length > notesToDisplay.length && (
+          <div className="flex justify-center mt-4">
+            <button
+              onClick={() => navigate("/notes")}
+              className="bg-[#868532] hover:bg-[#6f6c29] font-semibold transition  text-white px-9 py-3 rounded-lg shadow-md"
+            >
+              More Notes
+            </button>
+          </div>
+        )}
       </main>
 
-      <button className="fixed bottom-4 sm:bottom-5 md:bottom-6 right-4 sm:right-5 md:right-6 bg-[#868532] hover:bg-[#6f6c29] text-white rounded-full w-10 h-10 sm:w-12 sm:h-12 md:w-14 md:h-14 text-2xl sm:text-3xl flex items-center justify-center shadow-lg">
-        +
-      </button>
+      {/* Floating + Button */}
+      <Button
+  onClick={() => navigate("/editor")}
+  variant="primary"
+  className="fixed bottom-4 right-4 rounded-full w-12 h-12 text-3xl flex items-center justify-center shadow-lg"
+>
+  +
+</Button>
     </motion.div>
   );
 };
 
 export default Dashboard;
+
+
