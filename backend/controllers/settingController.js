@@ -7,7 +7,7 @@ exports.changePassword = async (req, res) => {
   try {
     const { userId, oldPassword, newPassword, confirmPassword } = req.body;
 
-    console.log("REQ BODY:", req.body); // 👈 Debugging line
+    console.log("REQ BODY:", req.body); 
 
     // User check
     const user = await User.findById(userId);

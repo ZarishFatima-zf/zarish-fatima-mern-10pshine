@@ -31,7 +31,9 @@ const Dashboard = () => {
 
       <main className="flex-1 mt-14 sm:mt-0 p-4 sm:p-6 md:p-8 lg:p-10">
         <motion.h2
-          className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4"
+          // className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold mb-3 sm:mb-4"
+                        className="text-xl sm:text-xl lg:text-4xl font-bold text-white mb-3"
+
           initial={{ y: -20, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           transition={{ duration: 0.6 }}
@@ -39,7 +41,7 @@ const Dashboard = () => {
           Welcome To Notezy, {user?.fullName || user?.email || "User"}
         </motion.h2>
 
-        <p className="text-gray-400 text-sm sm:text-base md:text-lg lg:text-xl leading-relaxed">
+        <p className="text-gray-400 text-sm sm:text-base lg:text-lg leading-relaxed">
           Your notes, your space, your way because every idea deserves a home.
         </p>
       </main>

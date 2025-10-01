@@ -88,7 +88,7 @@ const Signup = () => {
         >
           <motion.div variants={itemVariants} className="text-left mb-8">
             <motion.h1
-              className="text-4xl font-bold text-white mb-3"
+              className="text-2xl sm:text-2xl lg:text-4xl font-bold text-white mb-3"
               initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.7 }}
@@ -96,7 +96,7 @@ const Signup = () => {
               Create Notezy Account
             </motion.h1>
             <motion.p
-              className="text-gray-400 mt-2"
+              className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed mt-2"
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.2 }}
@@ -135,7 +135,7 @@ const Signup = () => {
                 type="submit"
                 disabled={formik.isSubmitting}
                 variant="primary"
-                className="bg-[#868532] hover:bg-[#6f6c29] text-white text-lg"
+                className="w-full py-3 " 
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.97 }}
               >
