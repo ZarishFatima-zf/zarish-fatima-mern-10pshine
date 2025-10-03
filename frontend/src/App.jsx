@@ -7,6 +7,7 @@ import Dashboard from "./pages/Dashboard";
 import Setting from "./pages/Setting";
 import Profile from "./pages/Profile";
 import NoteEditor from "./pages/NoteEditor";
+import AllNotes from "./pages/AllNotes";
 
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Route path="/profile" element={<Profile />} />
         <Route path="/noteeditor" element={<NoteEditor />} />         {/* New note */}
         <Route path="/noteeditor/:noteId" element={<NoteEditor />} /> {/* Edit note */}
+        <Route path="/notes" element={<AllNotes />} />
 
 
       </Routes>

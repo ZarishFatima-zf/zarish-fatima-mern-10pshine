@@ -1,279 +1,209 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import { motion } from "framer-motion";
-import { useNavigate, useParams, useLocation } from "react-router-dom";
-import axios from "axios";
-import Picker from "@emoji-mart/react";
-import data from "@emoji-mart/data";
+import Sidebar from "../components/Sidebar";
+import { useNavigate } from "react-router-dom";
+import { Formik, Form } from "formik";
+import * as Yup from "yup";
+import FormField from "../components/FormField"; 
+import Button from "../components/Button";
 
-const NoteEditor = () => {
+
+const Settings = () => {
   const navigate = useNavigate();
-  const { noteId } = useParams();
-  const location = useLocation();
-  const editorRef = useRef(null);
-  const editingNote = location.state?.note || null;
+  const [showModal, setShowModal] = useState(false);
 
-  const [title, setTitle] = useState(editingNote?.title || "");
-  const [content, setContent] = useState(editingNote?.content || "");
-  const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [showModal, setShowModal] = useState(false); // ✅ modal state
-  const [modalMessage, setModalMessage] = useState(""); // ✅ message
+  const validationSchema = Yup.object({
+    oldPassword: Yup.string().required("Old password is required"),
+  newPassword: Yup.string()
+  .min(6, "Password must be at least 6 characters long")
+  .matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{6,}$/,
+    "Password must include uppercase, lowercase, and a number"
+  )
 
-  const [activeFormats, setActiveFormats] = useState({
-    bold: false,
-    italic: false,
-    underline: false,
-    strikeThrough: false,
-    fontSize: "",
-    fontName: "",
+  .required("New password is required"),
+    confirmPassword: Yup.string()
+      .oneOf([Yup.ref("newPassword"), null], "Passwords must match")
+      .required("Confirm password is required"),
   });
 
-  const handleFormat = (command, value = null) => {
-    document.execCommand(command, false, value);
-    updateActiveFormats();
-  };
-
-  const updateActiveFormats = () => {
-    let blockType = document.queryCommandValue("formatBlock");
-    if (blockType) blockType = blockType.toLowerCase();
-
-    setActiveFormats({
-      bold: document.queryCommandState("bold"),
-      italic: document.queryCommandState("italic"),
-      underline: document.queryCommandState("underline"),
-      strikeThrough: document.queryCommandState("strikeThrough"),
-      fontSize: document.queryCommandValue("fontSize"),
-      fontName: document.queryCommandValue("fontName"),
-    });
-  };
-
-  useEffect(() => {
-    document.addEventListener("selectionchange", updateActiveFormats);
-    return () => {
-      document.removeEventListener("selectionchange", updateActiveFormats);
-    };
-  }, []);
-
-  useEffect(() => {
-    if (editingNote && editorRef.current) {
-      editorRef.current.innerHTML = editingNote.content || "";
-    }
-  }, [editingNote]);
-
-  const handleSave = async () => {
+  // ✅ Change Password Handler
+  const handleChangePassword = async (values, { resetForm }) => {
     try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (!user) {
-        setModalMessage("⚠️ Please login first");
-        setShowModal(true);
-        return;
-      }
+      const response = await fetch("http://localhost:5000/api/auth/change-password", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: localStorage.getItem("userId"),
+          oldPassword: values.oldPassword.trim(),
+          newPassword: values.newPassword.trim(),
+          confirmPassword: values.confirmPassword.trim(),
+        }),
+      });
 
-      const payload = {
-        title,
-        content: editorRef.current.innerHTML,
-      };
+      const data = await response.json();
 
-      if (editingNote) {
-        await axios.put(
-          `http://localhost:5000/api/notes/users/${user.id}/notes/${noteId}`,
-          payload
-        );
-        setModalMessage("✅ Note updated successfully!");
+      if (response.ok) {
+        resetForm();
+        localStorage.removeItem("userId");
+        localStorage.removeItem("user");
+        navigate("/login"); // 👈 Logout after password change
       } else {
-        await axios.post("http://localhost:5000/api/notes/add", {
-          userId: user.id,
-          ...payload,
-        });
-        setModalMessage("✅ Note saved successfully!");
+        alert(data.message || "Something went wrong");
       }
-
-      setShowModal(true);
-      setTimeout(() => {
-        setShowModal(false);
-        navigate("/notes");
-      }, 1500);
     } catch (error) {
-      console.error("Save Error:", error.response?.data || error.message);
-      setModalMessage(
-        "❌ Failed to save note: " +
-          (error.response?.data?.message || error.message)
-      );
-      setShowModal(true);
+      alert("Server error. Try again later.");
     }
   };
 
-  // Insert emoji
-  const insertEmoji = (emoji) => {
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
-    const range = selection.getRangeAt(0);
-    range.deleteContents();
-    range.insertNode(document.createTextNode(emoji.native));
-    range.collapse(false);
-    selection.removeAllRanges();
-    selection.addRange(range);
-    setContent(editorRef.current.innerHTML);
-  };
+  // ✅ Delete Account Handler
+  const handleDelete = async () => {
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/delete-account", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: localStorage.getItem("userId") }),
+      });
 
-  // Insert link
-  const handleLinkInsert = () => {
-    const selection = window.getSelection();
-    if (!selection.rangeCount) return;
+      await response.json();
 
-    const range = selection.getRangeAt(0);
-    const selectedText = selection.toString();
-    let url = selectedText;
-
-    if (!/^https?:\/\//i.test(selectedText)) {
-      url = "https://";
+      localStorage.removeItem("userId");
+      localStorage.removeItem("user");
+      navigate("/signup");
+    } catch (error) {
     }
-
-    const a = document.createElement("a");
-    a.href = url;
-    a.textContent = selectedText || url;
-    a.target = "_blank";
-    a.style.color = "#3b82f6";
-    a.style.textDecoration = "underline";
-
-    range.deleteContents();
-    range.insertNode(a);
-
-    range.setStartAfter(a);
-    range.collapse(true);
-    selection.removeAllRanges();
-    selection.addRange(range);
-
-    updateActiveFormats();
   };
 
-  // Detect URLs
-  const handleInput = (e) => {
-    const editor = e.currentTarget;
-    const walkNodes = (node) => {
-      if (node.nodeType === Node.TEXT_NODE) {
-        const urlRegex = /\b((https?:\/\/[^\s<]+)|(www\.[^\s<]+))/gi;
-        const text = node.textContent;
-
-        if (urlRegex.test(text)) {
-          const frag = document.createDocumentFragment();
-          let lastIndex = 0;
-
-          text.replace(urlRegex, (match, _url, httpMatch, wwwMatch, offset) => {
-            if (offset > lastIndex) {
-              frag.appendChild(document.createTextNode(text.slice(lastIndex, offset)));
-            }
-            let url = match;
-            if (wwwMatch) url = "https://" + match;
-
-            const a = document.createElement("a");
-            a.href = url;
-            a.textContent = match;
-            a.target = "_blank";
-            a.style.color = "#3b82f6";
-            a.style.textDecoration = "underline";
-            frag.appendChild(a);
-
-            lastIndex = offset + match.length;
-          });
-
-          if (lastIndex < text.length) {
-            frag.appendChild(document.createTextNode(text.slice(lastIndex)));
-          }
-          node.replaceWith(frag);
-        }
-      } else if (node.nodeType === Node.ELEMENT_NODE && node.nodeName !== "A") {
-        [...node.childNodes].forEach(walkNodes);
-      }
-    };
-    walkNodes(editor);
-    setContent(editor.innerHTML);
+  // ✅ Logout handler
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    localStorage.removeItem("userId");
+    navigate("/login");
   };
 
   return (
-    <>
-      {/* ✅ Modal Component */}
+    <motion.div
+      className="min-h-screen flex flex-col sm:flex-row bg-[#0A162D] text-white overflow-hidden"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Sidebar onLogout={handleLogout} />
+
+      {/* Main content */}
+      <main className="flex-1 mt-14 sm:mt-4 p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col items-center">
+        {/* Heading */}
+        <div className="text-center mb-6 md:mb-10 lg:mb-12">
+          <motion.h2
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 md:mb-3"
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+    
+              Settings
+            </motion.h2>
+          <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed">
+              Manage your account password and delete account
+            </p>
+          </div>
+
+          {/* Password Form */}
+          <motion.div
+                   className="bg-[#071124] w-full max-w-md sm:max-w-lg lg:max-w-2xl xl:max-w-3xl p-4 sm:p-6 lg:p-8 rounded-xl shadow-lg mx-auto"
+                   initial={{ y: 10, opacity: 0 }}
+                   animate={{ y: 0, opacity: 1 }}
+                   transition={{ duration: 0.6, delay: 0.2 }}
+          >
+            <Formik
+              initialValues={{ oldPassword: "", newPassword: "", confirmPassword: "" }}
+              validationSchema={validationSchema}
+              onSubmit={handleChangePassword}
+            >
+              {(formik) => (
+                <Form>
+                  <FormField
+                    label="Old Password"
+                    name="oldPassword"
+                    type="password"
+                    placeholder="Enter old password"
+                    formik={formik}
+                  />
+                  <FormField
+                    label="New Password"
+                    name="newPassword"
+                    type="password"
+                    placeholder="Enter new password"
+                    formik={formik}
+                  />
+                  <FormField
+                    label="Confirm Password"
+                    name="confirmPassword"
+                    type="password"
+                    placeholder="Re-enter new password"
+                    formik={formik}
+                  />
+
+                  {/* Forgot Password */}
+                  <div className="flex justify-end mb-6">
+                    <motion.button
+                      type="button"
+                      initial={{ y: 20, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ duration: 0.5, delay: 0.4 }}
+                      onClick={() => navigate("/forgot-password")}
+                      className="text-gray-500 hover:text-gray-400 text-sm transition-colors"
+                    >
+                      Forgot your password?
+                    </motion.button>
+                  </div>
+
+                  {/* Buttons */}
+                 <div className="flex gap-4">
+                        <Button type="submit" variant="primary">
+                          Change Password
+                        </Button>
+                        <Button type="button" variant="danger" onClick={() => setShowModal(true)}>
+                          Delete Account
+                        </Button>
+                      </div>                  
+                </Form>
+              )}
+            </Formik>
+          </motion.div>
+        </main>
+
+      {/* Delete Confirm Modal */}
       {showModal && (
         <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-50">
           <motion.div
-            className="bg-[#071124] p-6 rounded-lg shadow-lg text-center w-80 text-white"
+            className="bg-[#071124] p-6 rounded-lg shadow-lg text-center w-80"
             initial={{ scale: 0.8, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
           >
-            <p className="mb-4">{modalMessage}</p>
-            <button
-              onClick={() => setShowModal(false)}
-              className="px-4 py-2 rounded-md bg-[#868532] hover:bg-[#6f6c29] text-white"
-            >
-              OK
-            </button>
+            <h3 className="text-lg font-semibold mb-4">Are you sure?</h3>
+            <p className="text-gray-300 mb-6">
+              This action will permanently delete your account.
+            </p>
+            <div className="flex gap-3 justify-center">
+              <button
+                onClick={() => setShowModal(false)}
+                className="px-4 py-2 bg-gray-500 rounded-md hover:bg-gray-600 transition"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                className="px-4 py-2 bg-red-600 rounded-md hover:bg-red-700 transition"
+              >
+                Confirm
+              </button>
+            </div>
           </motion.div>
         </div>
       )}
-
-      {/* Main Editor */}
-      <motion.div
-        className="min-h-screen bg-[#0A162D] flex items-center justify-center p-6"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        exit={{ opacity: 0 }}
-        transition={{ duration: 0.4 }}
-      >
-        <motion.div
-          className="bg-[#071124] rounded-2xl shadow-lg w-full max-w-3xl p-6 text-white relative"
-          initial={{ scale: 0.8, opacity: 0, y: -40 }}
-          animate={{ scale: 1, opacity: 1, y: 0 }}
-          exit={{ scale: 0.8, opacity: 0, y: -40 }}
-          transition={{ duration: 0.3 }}
-        >
-          {/* Back Button */}
-          <button
-            onClick={() => navigate(-1)}
-            className="absolute top-3 right-3 text-gray-300 hover:text-white text-xl"
-          >
-            ✕
-          </button>
-
-          <h2 className="text-2xl font-bold mb-4">
-            {editingNote ? "Edit Note" : "New Note"}
-          </h2>
-
-          {/* Title */}
-          <input
-            type="text"
-            placeholder="Note title..."
-            className="w-full p-3 mb-4 rounded-md bg-transparent border border-yellow-400 text-white outline-none"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-
-          {/* Toolbar ... (unchanged) */}
-
-          {/* Editor */}
-          <div
-            ref={editorRef}
-            contentEditable
-            className="w-full min-h-[250px] p-3 rounded-md bg-transparent border border-gray-600 text-white outline-none"
-            onInput={handleInput}
-          ></div>
-
-          <div className="flex justify-end gap-3 mt-6">
-            <button
-              onClick={() => navigate(-1)}
-              className="px-4 py-2 rounded-md border border-gray-400 text-gray-300 hover:bg-gray-700"
-            >
-              Cancel
-            </button>
-            <button
-              onClick={handleSave}
-              className="px-4 py-2 rounded-md bg-[#868532] hover:bg-[#6f6c29] text-white"
-            >
-              {editingNote ? "Update Note" : "Save Note"}
-            </button>
-          </div>
-        </motion.div>
-      </motion.div>
-    </>
+    </motion.div>
   );
 };
 
-export default NoteEditor;
+export default Settings;

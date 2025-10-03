@@ -236,7 +236,7 @@ const NoteEditor = () => {
         <input
           type="text"
           placeholder="Note title..."
-          className="w-full p-3 mb-4 rounded-md bg-transparent border border-yellow-400 text-white outline-none"
+          className="w-full p-3 mb-4 rounded-md bg-transparent border border-[#868532] text-white outline-none"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
