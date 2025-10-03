@@ -159,21 +159,14 @@ const Settings = () => {
                   </div>
 
                   {/* Buttons */}
-                  <div className="flex gap-4">
-                    <button
-                      type="submit" // ✅ Corrected Formik submission
-                      className="flex-1 bg-[#868532] text-white font-semibold py-2 rounded-md hover:bg-[#6f6c29] transition"
-                    >
-                      Change Password
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => setShowModal(true)}
-                      className="flex-1 border border-red-500 text-red-500 font-semibold py-2 rounded-md hover:bg-red-600 hover:text-white transition"
-                    >
-                      Delete Account
-                    </button>
-                  </div>
+                 <div className="flex gap-4">
+                        <Button type="submit" variant="primary">
+                          Change Password
+                        </Button>
+                        <Button type="button" variant="danger" onClick={() => setShowModal(true)}>
+                          Delete Account
+                        </Button>
+                      </div>                  
                 </Form>
               )}
             </Formik>
