@@ -4,6 +4,12 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 
 
+
+
+
+
+
+
 function App() {
   return (
     <Router>
@@ -11,12 +17,19 @@ function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />       
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
-       </Routes>
+       
+
+
+
+
+
+
+
+
+
+      </Routes>
     </Router>
   );
 }
 
 export default App;
-
-
-
