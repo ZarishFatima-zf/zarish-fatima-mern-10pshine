@@ -88,7 +88,7 @@ const Login = () => {
         >
           <motion.div variants={itemVariants} className="text-left mb-8">
             <motion.h1
-              className="text-4xl font-bold text-white mb-3"
+              className="text-2xl sm:text-4xl lg:text-5xl font-bold text-white mb-3"
               initial={{ y: -30, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.7 }}
@@ -96,7 +96,8 @@ const Login = () => {
               Welcome To Notezy
             </motion.h1>
             <motion.p
-              className="text-gray-400 mt-2"
+            
+              className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed mt-2"
               initial={{ y: -20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               transition={{ duration: 0.7, delay: 0.2 }}
@@ -157,9 +158,9 @@ const Login = () => {
             animate={{ y: 0, opacity: 1 }}
             transition={{ duration: 0.5, delay: 0.4 }}
             onClick={() => navigate('/forgot-password')}
-            className="text-gray-500 hover:text-gray-400 text-sm transition-colors duration-200"
+          className="text-gray-500 hover:text-gray-400 text-sm transition-colors duration-200 underline"
           > Forgot your password?
-</motion.button>
+          </motion.button>
      </motion.div>
         </motion.div>
       </div>
