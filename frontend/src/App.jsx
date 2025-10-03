@@ -1,4 +1,4 @@
-import React, { Profiler } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
@@ -6,11 +6,8 @@ import ForgetPassword from "./components/ForgetPassword";
 import Dashboard from "./pages/Dashboard";
 import Setting from "./pages/Setting";
 import Profile from "./pages/Profile";
-
-
-
-
-
+import NoteEditor from "./pages/NoteEditor";
+import AllNotes from "./pages/AllNotes";
 
 
 function App() {
@@ -25,15 +22,14 @@ function App() {
         <Route path="/dashboard" element={<Dashboard />} />
         <Route path="/setting" element={<Setting />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/noteeditor" element={<NoteEditor />} />         {/* New note */}
+        <Route path="/noteeditor/:noteId" element={<NoteEditor />} /> {/* Edit note */}
+        <Route path="/notes" element={<AllNotes />} />
 
 
-
-       </Routes>
+      </Routes>
     </Router>
   );
 }
 
 export default App;
-
-
-
