@@ -1,14 +1,15 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
-import { StickyNote, LayoutDashboard, User, Settings, LogOut } from "lucide-react";
+import { StickyNote, LayoutDashboard, NotebookPen,User , Settings, LogOut } from "lucide-react";
 
 const Sidebar = ({ onLogout }) => {
   const menuItems = [
-    { name: "Dashboard", icon: <LayoutDashboard className="w-6 h-6 sm:w-7 sm:h-7" />, path: "/dashboard" },
-    { name: "My Notes", icon: <StickyNote className="w-6 h-6 sm:w-7 sm:h-7" />, path: "/notes" },
-    { name: "Profile", icon: <User className="w-6 h-6 sm:w-7 sm:h-7" />, path: "/profile" },
-    { name: "Setting", icon: <Settings className="w-6 h-6 sm:w-7 sm:h-7" />, path: "/setting" },
+    { name: "Dashboard", icon: <LayoutDashboard className="w-6 h-6 sm:w-6 sm:h-6" />, path: "/dashboard" },
+    { name: "Add Note", icon: <NotebookPen className="w-6 h-6 sm:w-6 sm:h-6" />, path: "/noteeditor" },
+    { name: "All Notes", icon: <StickyNote className="w-6 h-6 sm:w-6 sm:h-6" />, path: "/notes" },
+    { name: "Profile", icon: <User className="w-6 h-6 sm:w-6 sm:h-6" />, path: "/profile" },
+    { name: "Settings", icon: <Settings className="w-6 h-6 sm:w-6 sm:h-6" />, path: "/setting" },
   ];
 
   return (
@@ -81,34 +82,33 @@ const Sidebar = ({ onLogout }) => {
       >
         {/* Left: Logo */}
         <div className="flex items-center gap-2">
-          <StickyNote className="w-8 h-8 text-[#868532]" />
-          <h1 className="text-xl font-bold text-white">Notezy</h1>
+          <StickyNote className="w-7 h-7 text-[#868532]" />
+          <h1 className="text-2xl font-bold text-white">Notezy</h1>
         </div>
 
         {/* Right: Icons + Logout */}
-<div className="flex items-center gap-2">
-  {menuItems.map((item, idx) => (
-    <NavLink
-      key={idx}
-      to={item.path}
-      className={({ isActive }) =>
-        `relative p-2 transition-all ${
-          isActive
-            ? "text-[#868532] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#868532]"
-            : "text-white hover:text-[#868532] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-[2px] hover:after:bg-[#868532]"
-        }`
-      }
-    >
-      {item.icon}
-    </NavLink>
-  ))}
-
+        <div className="flex items-center gap-1">
+          {menuItems.map((item, idx) => (
+            <NavLink
+              key={idx}
+              to={item.path}
+              className={({ isActive }) =>
+                `relative p-0.5 transition-all ${
+                  isActive
+                    ? "text-[#868532] after:absolute after:bottom-0 after:left-0 after:w-full after:h-[2px] after:bg-[#868532]"
+                    : "text-white hover:text-[#868532] hover:after:absolute hover:after:bottom-0 hover:after:left-0 hover:after:w-full hover:after:h-[2px] hover:after:bg-[#868532]"
+                }`
+              }
+            >
+              {item.icon}
+            </NavLink>
+          ))}
 
           <button
             onClick={onLogout}
             className="p-2 rounded-lg border border-[#868532] text-[#868532] hover:bg-[#868532] hover:text-white transition-colors"
           >
-            <LogOut className="w-6 h-6" />
+            <LogOut className="w-5 h-5" />
           </button>
         </div>
       </motion.header>

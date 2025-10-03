@@ -105,16 +105,32 @@ const Settings = () => {
               Settings
             </motion.h2>
             <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed">
+      <Sidebar onLogout={handleLogout} />
+
+      {/* Main content */}
+      <main className="flex-1 mt-14 sm:mt-4 p-4 sm:p-6 md:p-8 lg:p-10 flex flex-col items-center">
+        {/* Heading */}
+        <div className="text-center mb-6 md:mb-10 lg:mb-12">
+          <motion.h2
+            className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-2 md:mb-3"
+            initial={{ y: -10, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ duration: 0.6 }}
+          >
+    
+              Settings
+            </motion.h2>
+          <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed">
               Manage your account password and delete account
             </p>
           </div>
 
           {/* Password Form */}
           <motion.div
-            className="bg-[#071124] p-6 sm:p-8 lg:p-10 rounded-2xl shadow-lg"
-            initial={{ y: 20, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
+                   className="bg-[#071124] w-full max-w-md sm:max-w-lg lg:max-w-2xl xl:max-w-3xl p-4 sm:p-6 lg:p-8 rounded-xl shadow-lg mx-auto"
+                   initial={{ y: 10, opacity: 0 }}
+                   animate={{ y: 0, opacity: 1 }}
+                   transition={{ duration: 0.6, delay: 0.2 }}
           >
             <Formik
               initialValues={{ oldPassword: "", newPassword: "", confirmPassword: "" }}
@@ -161,19 +177,18 @@ const Settings = () => {
 
                   {/* Buttons */}
                  <div className="flex gap-4">
-  <Button type="submit" variant="primary">
-    Change Password
-  </Button>
-  <Button type="button" variant="danger" onClick={() => setShowModal(true)}>
-    Delete Account
-  </Button>
-</div>                  
+                        <Button type="submit" variant="primary">
+                          Change Password
+                        </Button>
+                        <Button type="button" variant="danger" onClick={() => setShowModal(true)}>
+                          Delete Account
+                        </Button>
+                      </div>                  
                 </Form>
               )}
             </Formik>
           </motion.div>
         </main>
-      </div>
 
       {/* Delete Confirm Modal */}
       {showModal && (
