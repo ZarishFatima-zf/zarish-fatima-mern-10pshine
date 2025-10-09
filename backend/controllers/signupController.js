@@ -1,12 +1,17 @@
 const User = require("../models/User");
 const bcrypt = require("bcryptjs");
+const logger = require("../logger"); 
 
 exports.registerUser = async (req, res) => {
   try {
     const { fullName, email, password } = req.body;
+    logger.info({ email }, "User registration attempt received");
 
     const existingUser = await User.findOne({ email });
-    if (existingUser) return res.status(400).json({ message: "Email already registered" });
+    if (existingUser) {
+      logger.warn({ email }, "Registration failed - Email already registered");
+      return res.status(400).json({ message: "Email already registered" });
+    }
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -17,10 +22,11 @@ exports.registerUser = async (req, res) => {
     });
 
     await newUser.save();
-    res.status(201).json({ message: "User registered successfully" });
+    logger.info({ userId: newUser._id, email }, "User registered successfully");
 
+    res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    console.error("Signup error:", error);
+    logger.error({ error }, "Signup Error");
     res.status(500).json({ message: "Server error" });
   }
 };
