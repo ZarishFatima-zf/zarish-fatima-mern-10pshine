@@ -10,6 +10,12 @@ import NoteEditor from "./pages/NoteEditor";
 import AllNotes from "./pages/AllNotes";
 
 
+
+
+
+
+
+
 function App() {
   return (
     <Router>
@@ -17,6 +23,16 @@ function App() {
         <Route path="/" element={<Navigate to="/login" replace />} />       
         <Route path="/login" element={<Login />} />
         <Route path="/signup" element={<Signup />} />
+<<<<<<< HEAD
+       
+
+
+
+
+
+
+
+=======
         <Route path="/forgot-password" element={<ForgetPassword />} />
         <Route path="/reset-password/:token" element={<ForgetPassword />} /> 
         <Route path="/dashboard" element={<Dashboard />} />
@@ -25,6 +41,7 @@ function App() {
         <Route path="/noteeditor" element={<NoteEditor />} />         {/* New note */}
         <Route path="/noteeditor/:noteId" element={<NoteEditor />} /> {/* Edit note */}
         <Route path="/notes" element={<AllNotes />} />
+>>>>>>> origin/develop
 
 
       </Routes>
