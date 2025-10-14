@@ -10,7 +10,7 @@ const authRoutes = require("./routes/authRoutes");
 dotenv.config();
 
 const app = express();
-
+ if NOT testing
 if (process.env.NODE_ENV !== "test") {
   connectDB();
 }
@@ -42,6 +42,10 @@ app.use("/api/auth", authRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.get("/", (req, res) => {
+  res.send("Server running ");
+});
+
+// ✅ Export app for testing
   res.send("Server running ");
 });
 
