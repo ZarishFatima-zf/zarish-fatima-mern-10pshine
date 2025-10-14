@@ -88,6 +88,23 @@ const Settings = () => {
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
+      {/* Sidebar */}
+      <Sidebar onLogout={handleLogout} />
+
+      {/* Main Content */}
+      <div className="flex-1 flex flex-col items-center justify-start p-4 sm:p-6 lg:p-8">
+        <main className="w-full max-w-md sm:max-w-lg lg:max-w-2xl xl:max-w-3xl p-4 sm:p-6 lg:p-8">
+          {/* Heading */}
+          <div className="text-center mb-6 sm:mb-8 lg:mb-10 -mt-4">
+            <motion.h2
+           className="text-3xl sm:text-4xl lg:text-5xl font-bold mb-1"
+              initial={{ y: -10, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.6 }}
+            >
+              Settings
+            </motion.h2>
+            <p className="text-gray-400 text-sm sm:text-base lg:text-lg max-w-2xl mx-auto leading-relaxed">
       <Sidebar onLogout={handleLogout} />
 
       {/* Main content */}
