@@ -10,8 +10,7 @@ const authRoutes = require("./routes/authRoutes");
 dotenv.config();
 
 const app = express();
-
-// 🧩 Only connect to MongoDB if NOT testing
+ if NOT testing
 if (process.env.NODE_ENV !== "test") {
   connectDB();
 }
@@ -43,10 +42,13 @@ app.use("/api/auth", authRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
 app.get("/", (req, res) => {
-  res.send("Server running ✅");
+  res.send("Server running ");
 });
 
 // ✅ Export app for testing
+  res.send("Server running ");
+});
+
 if (process.env.NODE_ENV !== "test") {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => logger.info(`Server running on port ${PORT}`));
