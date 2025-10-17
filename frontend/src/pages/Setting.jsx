@@ -161,7 +161,7 @@ const Settings = () => {
                     formik={formik}
                   />
 
-                  {/* Forgot Password */}
+                  /* {/* Forgot Password */}
                   <div className="flex justify-end mb-6">
                     <motion.button
                       type="button"
@@ -173,7 +173,7 @@ const Settings = () => {
                     >
                       Forgot your password?
                     </motion.button>
-                  </div>
+                  </div> */
 
                   {/* Buttons */}
                  <div className="flex gap-4">
