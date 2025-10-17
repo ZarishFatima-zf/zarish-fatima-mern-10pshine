@@ -104,7 +104,7 @@ useEffect(() => {
         </div>
 
         {/* Notes Grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-6">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mt-5 mb-6">
           {notesToDisplay.length > 0 ? (
             notesToDisplay.map((note) => (
               <NoteCard
