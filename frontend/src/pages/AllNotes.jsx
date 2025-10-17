@@ -5,7 +5,7 @@ import NoteCard from "../components/NoteCard";
 import Button from "../components/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Search } from "lucide-react";
+import { Search,ArrowBigDown } from "lucide-react";
 const AllNotes = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -19,9 +19,9 @@ const AllNotes = () => {
   useEffect(() => {
     const updateNotesPerPage = () => {
       const width = window.innerWidth;
-      if (width < 640) setNotesPerPage(3);
+      if (width < 640) setNotesPerPage(2);
       else if (width >= 640 && width < 1024) setNotesPerPage(6);
-      else setNotesPerPage(9);
+      else setNotesPerPage(6);
     };
     updateNotesPerPage();
     window.addEventListener("resize", updateNotesPerPage);
@@ -118,7 +118,7 @@ const AllNotes = () => {
             All Notes
           </motion.h2>
           <motion.p
-            className="text-gray-400 text-sm sm:text-base lg:text-lg mb-1 max-w-2xl mx-auto leading-relaxed"
+            className="text-gray-400 text-sm sm:text-base lg:text-lg mb-3 max-w-2xl mx-auto leading-relaxed"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.6 }}
@@ -128,40 +128,48 @@ const AllNotes = () => {
         </div>
 
         {/* Total Notes + Search + Sort */}
-        <div className="flex justify-between items-center mb-1 flex-wrap gap-3 bg-[#0A162D] z-10 p-1">
+       <div className="flex flex-wrap justify-between items-center bg-[#0A162D] z-10 p-3 sm:p-3 mb-2">
+        {/* Sort Dropdown */}
+      <div className="relative flex items-center">
         <select
           value={sortOption}
           onChange={(e) => setSortOption(e.target.value)}
-          className="bg-[#868532] text-white py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg w-fit shadow-md text-sm sm:text-base"
+          className="bg-[#868532] text-white py-1.5 sm:py-2 pl-4 pr-9 rounded-lg w-fit  text-sm sm:text-base 
+                    appearance-none cursor-pointer focus:outline-none border-none"
         >
-          <option value="latest">Latest</option>
-          <option value="oldest">Oldest</option>
-        </select>
+                <option value="latest">Latest</option>
+                <option value="oldest">Oldest</option>
+              </select>
 
-  {/* Search Bar */}
-  <div className="flex items-center gap-2 relative flex-1 sm:flex-none">
-    <input
-      type="text"
-      placeholder="Search notes..."
-      value={searchQuery}
-      onChange={(e) => {
-        setSearchQuery(e.target.value);
-        setCurrentPage(1);
-      }}
-      className="bg-gray-700 text-white py-1.5 px-2 rounded-md shadow-md focus:outline-none text-sm sm:text-base w-full sm:w-[200px]"
-    />
-    {/* Search icon right side */}
-    <Search className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-3 sm:h-3" />
-  </div>
+              {/* Icon on the right side */}
+              <ArrowBigDown className="absolute right-3 text-white w-4 h-4 pointer-events-none" />
+            </div>
 
-  <div className="bg-[#868532] text-white py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg w-fit shadow-md text-sm sm:text-base">
-    Total Notes: <span className="font-semibold">{notes.length}</span>
-  </div>
-</div>
+
+        {/* Search Bar */}
+        <div className="flex items-center gap-2 relative flex-1 sm:flex-none">
+          <input
+            type="text"
+            placeholder="Search notes..."
+            value={searchQuery}
+            onChange={(e) => {
+              setSearchQuery(e.target.value);
+              setCurrentPage(1);
+            }}
+          className="bg-gray-700 text-white py-2 px-3 rounded-md shadow-md focus:outline-none text-sm sm:text-base 
+                w-full sm:w-[280px] md:w-[380px] lg:w-[520px] transition-all"    />
+              {/* Search icon right side */}
+              <Search className="absolute right-2 sm:right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-3 sm:h-3" />
+            </div>
+
+        <div className="bg-[#868532] text-white py-1.5 sm:py-2 px-3 sm:px-4 rounded-lg w-fit shadow-md text-sm sm:text-base">
+          Total Notes: <span className="font-semibold">{notes.length}</span>
+        </div>
+      </div>
 
         {/* Notes Grid */}
         <motion.div
-          className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-6"
+          className="grid gap-8 sm:grid-cols-2 lg:grid-cols-3 mt-5 lg:mb-10 mb-4 px-2"
           variants={containerVariants}
           initial="hidden"
           animate="visible"
