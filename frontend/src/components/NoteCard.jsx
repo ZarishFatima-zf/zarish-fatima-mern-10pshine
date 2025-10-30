@@ -1,3 +1,4 @@
+import React from "react"; // 👈 Add this line
 import { motion } from "framer-motion";
 import { Pencil, Trash2, Calendar, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";

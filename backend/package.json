@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --timeout 10000 --require=test/setup.js"
+    "test": "nyc --all --include=controllers --include=models --include=routes mocha --timeout 10000 --require=test/setup.js"
   },
   "keywords": [],
   "author": "",
@@ -28,6 +28,7 @@
     "chai": "^4.3.7",
     "chai-http": "^4.4.0",
     "mocha": "^11.7.4",
+    "nyc": "^17.1.0",
     "sinon": "^21.0.0"
   }
 }

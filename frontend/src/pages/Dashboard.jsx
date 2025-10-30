@@ -136,12 +136,12 @@ useEffect(() => {
 
       {/* Floating + Button */}
       <Button
-  onClick={() => navigate("/noteeditor")}
-  variant="primary"
-  className="fixed bottom-4 right-4 rounded-full w-12 h-12 text-3xl flex items-center justify-center shadow-lg"
->
-  +
-</Button>
+          onClick={() => navigate("/noteeditor")}
+          variant="primary"
+          className="fixed bottom-4 right-4 rounded-full w-12 h-12 text-3xl flex items-center justify-center shadow-lg"
+        >
+          +
+        </Button>
     </motion.div>
   );
 };
