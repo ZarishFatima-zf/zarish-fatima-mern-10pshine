@@ -1,6 +1,0 @@
-{
-  "reporter": ["lcov", "text-summary"],
-  "all": true,
-  "include": ["**/*.js"],
-  "exclude": ["test/**/*.js", "node_modules"]
-}
