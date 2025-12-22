@@ -1,4 +1,9 @@
-import serverless from "serverless-http";
-import app from "../server.js"; // Import your existing Express app
+import mongoose from "mongoose";
 
-export const handler = serverless(app);
+const uri = process.env.MONGO_URI;
+
+mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+
+export default async function handler(req, res) {
+  res.status(200).json({ message: "Backend working!" });
+}
