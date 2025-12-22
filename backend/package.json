@@ -3,8 +3,12 @@
   "version": "1.0.0",
   "description": "",
   "main": "server.js",
+    "type": "commonjs",
+
   "scripts": {
       "start": "node server.js",
+        "vercel-dev": "vercel dev",
+
 
     "test": "nyc --all --include=controllers --include=models --include=routes mocha --timeout 10000 --require=test/setup.js"
   },
