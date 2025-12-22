@@ -55,7 +55,8 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 // ✅ Export app for testing
-if (process.env.NODE_ENV !== "test") {
+// if (process.env.NODE_ENV !== "test") {
+if (process.env.NODE_ENV !== "test" && !process.env.VERCEL) {
   const PORT = process.env.PORT || 5000;
   app.listen(PORT, () => logger.info(`Server running on port ${PORT}`));
 }
