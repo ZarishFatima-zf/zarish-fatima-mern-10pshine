@@ -2,8 +2,10 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
   "scripts": {
+      "start": "node server.js",
+
     "test": "nyc --all --include=controllers --include=models --include=routes mocha --timeout 10000 --require=test/setup.js"
   },
   "keywords": [],
