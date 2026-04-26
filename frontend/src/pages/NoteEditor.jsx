@@ -63,20 +63,19 @@ const NoteEditor = () => {
     setNotification({ show: true, message, type });
     setTimeout(() => setNotification({ show: false, message: "", type: "success" }), 3000);
   };
-
 const handleSave = async () => {
   try {
     const user = JSON.parse(localStorage.getItem("user"));
 
-    if (!user?.id) {
+    if (!user) {
       showNotification("⚠️ Please login first", "error");
       navigate("/login");
       return;
     }
 
     const payload = {
-      title: title.trim(),
-      content: editorRef.current?.innerHTML || "",
+      title,
+      content: editorRef.current.innerHTML,
     };
 
     // ➕ CREATE NOTE
