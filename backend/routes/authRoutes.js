@@ -27,11 +27,10 @@ router.put("/:id", upload.single("image"), profileController.updateProfile);
 router.post("/:id/upload", upload.single("image"), profileController.uploadImage);
 router.delete("/:id/remove-image", profileController.removeImage);
 
-// Notes
-router.post("/add", noteController.addNote);
+// Notes ✅ FIXED REST STYLE
+router.post("/users/:userId/notes", noteController.addNote);
 router.get("/users/:userId/notes", noteController.getNotes);
 router.put("/users/:userId/notes/:noteId", noteController.updateNote);
 router.delete("/users/:userId/notes/:noteId", noteController.deleteNote);
-
 
 module.exports = router;

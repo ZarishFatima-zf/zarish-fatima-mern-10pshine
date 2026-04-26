@@ -2,8 +2,14 @@
   "name": "backend",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "server.js",
+    "type": "commonjs",
+
   "scripts": {
+      "start": "node server.js",
+        "vercel-dev": "vercel dev",
+
+
     "test": "nyc --all --include=controllers --include=models --include=routes mocha --timeout 10000 --require=test/setup.js"
   },
   "keywords": [],
@@ -22,7 +28,8 @@
     "nodemailer": "^7.0.6",
     "pino": "^10.0.0",
     "pino-http": "^11.0.0",
-    "pino-pretty": "^13.1.1"
+    "pino-pretty": "^13.1.1",
+    "serverless-http": "^4.0.0"
   },
   "devDependencies": {
     "chai": "^4.3.7",

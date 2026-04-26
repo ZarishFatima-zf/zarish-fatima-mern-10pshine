@@ -64,42 +64,50 @@ const NoteEditor = () => {
   };
 
   const handleSave = async () => {
-    try {
-      const user = JSON.parse(localStorage.getItem("user"));
-      if (!user) {
-        showNotification("⚠️ Please login first", "error");
-        navigate("/login");
-        return;
-      }
+  try {
+    const user = JSON.parse(localStorage.getItem("user"));
 
-      const payload = {
-        title,
-        content: editorRef.current.innerHTML,
-      };
-
-      if (editingNote) {
-        await axios.put(
-          `http://localhost:5000/api/notes/users/${user.id}/notes/${noteId}`,
-          payload
-        );
-        showNotification("✅ Note updated successfully!", "success");
-      } else {
-        await axios.post("http://localhost:5000/api/notes/add", {
-          userId: user.id,
-          ...payload,
-        });
-        showNotification("✅ Note saved successfully!", "success");
-      }
-
-      setTimeout(() => navigate("/notes"), 1200);
-    } catch (error) {
-      console.error("Save Error:", error.response?.data || error.message);
-      showNotification(
-        "❌ Failed to save note: " + (error.response?.data?.message || error.message),
-        "error"
-      );
+    if (!user) {
+      showNotification("⚠️ Please login first", "error");
+      navigate("/login");
+      return;
     }
-  };
+
+    const payload = {
+      title: title.trim(),
+      content: editorRef.current?.innerHTML || "",
+    };
+
+    // 🚀 UPDATE NOTE
+    if (editingNote) {
+      await axios.put(
+        `http://localhost:5000/api/notes/users/${user.id}/notes/${noteId}`,
+        payload
+      );
+
+      showNotification("✅ Note updated successfully!", "success");
+    } 
+    // ➕ CREATE NOTE
+    else {
+      await axios.post(
+        `http://localhost:5000/api/notes/users/${user.id}/notes`,
+        payload
+      );
+
+      showNotification("✅ Note saved successfully!", "success");
+    }
+
+    setTimeout(() => navigate("/notes"), 1200);
+  } catch (error) {
+    console.error("Save Error:", error.response?.data || error.message);
+
+    showNotification(
+      "❌ Failed to save note: " +
+        (error.response?.data?.message || error.message),
+      "error"
+    );
+  }
+};
 
   const insertEmoji = (emoji) => {
     const selection = window.getSelection();
