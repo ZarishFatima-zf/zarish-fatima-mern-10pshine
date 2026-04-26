@@ -8,8 +8,8 @@
     "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview",
-      "test": "vitest",
-  "test:ui": "vitest --ui"
+    "test": "vitest",
+    "test:ui": "vitest --ui"
   },
   "dependencies": {
     "@emoji-mart/data": "^1.2.1",
@@ -44,7 +44,7 @@
     "jsdom": "^27.0.0",
     "postcss": "^8.4.35",
     "tailwindcss": "^3.4.1",
-    "vite": "^5.4.2",
+    "vite": "^5.4.21",
     "vitest": "^3.2.4"
   }
 }
