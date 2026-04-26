@@ -80,10 +80,7 @@ const handleSave = async () => {
 
     // ➕ CREATE NOTE
     if (!editingNote) {
-      await axios.post(`${API}/api/notes/add`, {
-        userId: user.id,
-        ...payload,
-      });
+     await axios.post(`${API}/api/notes/add`, { userId: user.id, ...payload });;
 
       showNotification("✅ Note saved successfully!", "success");
     }
