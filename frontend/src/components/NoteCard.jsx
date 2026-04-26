@@ -38,7 +38,7 @@ const NoteCard = ({ note, onDelete }) => {
         {/* Action Buttons */}
         <div className="flex gap-3 justify-end mb-2">
           <button
-            onClick={() => navigate(`/editor/${note._id}`, { state: { note } })}
+            onClick={() => navigate(`/noteeditor/${note._id}`, { state: { note } })}
             className="hover:text-blue-400 transition"
           >
             <Pencil size={14} />
