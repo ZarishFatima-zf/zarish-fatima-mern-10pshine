@@ -4,6 +4,7 @@ import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import Picker from "@emoji-mart/react";
 import data from "@emoji-mart/data";
+import API from "../config/api";
 
 const NoteEditor = () => {
   const navigate = useNavigate();
@@ -67,10 +68,29 @@ const NoteEditor = () => {
   try {
     const user = JSON.parse(localStorage.getItem("user"));
 
-    if (!user) {
-      showNotification("⚠️ Please login first", "error");
-      navigate("/login");
-      return;
+      const payload = {
+        title,
+        content: editorRef.current.innerHTML,
+      };
+
+      if (editingNote) {
+        await axios.put(`${API}/api/notes/users/${user.id}/notes/${noteId}`, payload);
+        showNotification("✅ Note updated successfully!", "success");
+      } else {
+        await axios.post(`${API}/api/notes/add`, {
+          userId: user.id,
+          ...payload,
+        });
+        showNotification("✅ Note saved successfully!", "success");
+      }
+
+      setTimeout(() => navigate("/notes"), 1200);
+    } catch (error) {
+      console.error("Save Error:", error.response?.data || error.message);
+      showNotification(
+        "❌ Failed to save note: " + (error.response?.data?.message || error.message),
+        "error"
+      );
     }
 
     const payload = {

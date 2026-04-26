@@ -4,6 +4,7 @@ import { Pencil, Trash2, Calendar, X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 
+
 const NoteCard = ({ note, onDelete }) => {
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);

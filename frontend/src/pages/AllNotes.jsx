@@ -6,6 +6,8 @@ import Button from "../components/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { Search,ArrowBigDown } from "lucide-react";
+import API from "../config/api";
+
 const AllNotes = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
@@ -44,9 +46,7 @@ const AllNotes = () => {
 
   const fetchNotes = async (userId) => {
     try {
-      const res = await axios.get(
-        `http://localhost:5000/api/notes/users/${userId}/notes`
-      );
+      const res = await axios.get(`${API}/api/notes/users/${userId}/notes`);
       setNotes(res.data.notes || []);
     } catch (err) {
       console.error(err);
@@ -55,9 +55,8 @@ const AllNotes = () => {
 
   const handleDeleteNote = async (noteId) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/api/notes/users/${user.id}/notes/${noteId}`
-      );
+      await      awaitaxios.delete(`${API}/api/notes/users/${user.id}/notes/${noteId}`);
+
       setNotes(notes.filter((note) => note._id !== noteId));
     } catch (err) {
       console.error(err);

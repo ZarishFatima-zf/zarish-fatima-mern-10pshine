@@ -3,6 +3,7 @@ import { NavLink } from "react-router-dom";
 import { motion } from "framer-motion";
 import { StickyNote, LayoutDashboard, NotebookPen,User , Settings, LogOut } from "lucide-react";
 
+
 const Sidebar = ({ onLogout }) => {
   const menuItems = [
     { name: "Dashboard", icon: <LayoutDashboard className="w-6 h-6 sm:w-6 sm:h-6" />, path: "/dashboard" },
