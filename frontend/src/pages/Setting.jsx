@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/SideBar";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form } from "formik";
 import * as Yup from "yup";
