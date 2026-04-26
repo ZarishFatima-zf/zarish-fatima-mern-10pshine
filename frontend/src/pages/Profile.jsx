@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Camera, X } from "lucide-react";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/SideBar";
 import Button from "../components/Button";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
