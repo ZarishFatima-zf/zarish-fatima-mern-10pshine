@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/SideBar";
 import NoteCard from "../components/NoteCard";
 import Button from "../components/Button";
 import axios from "axios";
