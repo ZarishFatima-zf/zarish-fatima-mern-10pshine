@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import Sidebar from "../components/Sidebar";
+import Sidebar from "../components/SideBar";
 import NoteCard from "../components/NoteCard";
 import { StickyNote } from "lucide-react";
 import Button from "../components/Button";
