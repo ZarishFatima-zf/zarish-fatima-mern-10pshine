@@ -6,6 +6,8 @@ import NoteCard from "../components/NoteCard";
 import { StickyNote } from "lucide-react";
 import Button from "../components/Button";
 import axios from "axios";
+import API from "../config/api";
+
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -17,9 +19,7 @@ useEffect(() => {
   if (savedUser) {
     const u = JSON.parse(savedUser);
     setUser(u);
-
-    axios
-      .get(`http://localhost:5000/api/notes/users/${u.id}/notes`)
+    axios.get(`${API}/api/notes/users/${u.id}/notes`)
       .then((res) => {
         // Sort notes by createdAt (descending => latest first)
         const sortedNotes = (res.data.notes || []).sort(
@@ -37,9 +37,7 @@ useEffect(() => {
 
   const handleDeleteNote = async (noteId) => {
     try {
-      await axios.delete(
-        `http://localhost:5000/api/notes/users/${user.id}/notes/${noteId}`
-      );
+      await axios.delete(`${API}/api/notes/users/${user.id}/notes/${noteId}`);
       setNotes(notes.filter((note) => note._id !== noteId));
     } catch (err) {
       console.error("Delete Note Error:", err);

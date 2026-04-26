@@ -6,7 +6,7 @@ import { Formik, Form } from "formik";
 import * as Yup from "yup";
 import FormField from "../components/FormField"; 
 import Button from "../components/Button";
-
+import API from "../config/api";
 
 const Settings = () => {
   const navigate = useNavigate();
@@ -30,8 +30,7 @@ const Settings = () => {
   // ✅ Change Password Handler
   const handleChangePassword = async (values, { resetForm }) => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/change-password", {
-        method: "POST",
+const response = await fetch(`${API}/api/auth/change-password`, {        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           userId: localStorage.getItem("userId"),
@@ -59,8 +58,7 @@ const Settings = () => {
   // ✅ Delete Account Handler
   const handleDelete = async () => {
     try {
-      const response = await fetch("http://localhost:5000/api/auth/delete-account", {
-        method: "POST",
+const response = await fetch(`${API}/api/auth/delete-account`, {        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId: localStorage.getItem("userId") }),
       });
