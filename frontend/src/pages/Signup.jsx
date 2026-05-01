@@ -5,6 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import Button from '../components/Button';
 import FormField from '../components/FormField';
 import API from "../config/api";
+import notebook from "../images/notebook.png";
+
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -71,9 +73,9 @@ const Signup = () => {
         transition={{ duration: 1, ease: 'easeOut' }}
       >
         <motion.img
-          src="/src/images/notebook.png"
-          alt="Notebook illustration"
-          className="w-full h-full object-contain"
+  src={notebook}
+  alt="Notebook illustration"
+  className="w-full h-full object-contain"
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 1.2 }}
